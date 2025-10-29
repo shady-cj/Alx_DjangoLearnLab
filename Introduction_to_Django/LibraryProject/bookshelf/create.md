@@ -6,8 +6,8 @@ from bookshelf.models import Book
 
 # Create a new Book record
 book = Book.objects.create(
-    title="Harry Potter",
-    author="J.K. Rowling",
+    title="Down and Out in Paris and London ",
+    author="George orwell",
     publication_year=2024
 )
 
