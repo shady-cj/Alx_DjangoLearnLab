@@ -10,7 +10,7 @@ from bookshelf.models import Book
 book = Book.objects.get(id=1)
 
 # Modify its attributes
-book.title = "Nineteen Eight-Four"
+book.title = "Nineteen Eighty-Four"
 
 # Save changes to the database
 book.save()

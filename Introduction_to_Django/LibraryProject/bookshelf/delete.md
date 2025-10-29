@@ -30,5 +30,5 @@ book.delete()
 To delete multiple records:
 
 ```python
-Book.objects.filter(author="J.K. Rowling").delete()
+Book.objects.filter(author="George Orwell").delete()
 ```
