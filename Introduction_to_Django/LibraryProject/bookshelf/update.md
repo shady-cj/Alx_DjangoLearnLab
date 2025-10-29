@@ -10,8 +10,8 @@ from bookshelf.models import Book
 book = Book.objects.get(id=1)
 
 # Modify its attributes
-book.publication_year = 2000
-book.title = "Harry Potter and the Sorcerer's Stone"
+book.publication_year = 1949
+book.title = "1984"
 
 # Save changes to the database
 book.save()
