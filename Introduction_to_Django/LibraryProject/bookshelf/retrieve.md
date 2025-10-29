@@ -18,8 +18,8 @@ books
 ### Output
 
 ```python
-<Book: Harry Potter by J.K. Rowling (2024)>
-<QuerySet [<Book: Harry Potter by J.K. Rowling (2024)>]>
+<Book: 1984 (1949)>
+<QuerySet [<Book: 1984 (1949)>]>
 ```
 
 

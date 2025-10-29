@@ -6,16 +6,16 @@ from bookshelf.models import Book
 
 # Create a new Book record
 book = Book.objects.create(
-    title="Down and Out in Paris and London ",
+    title="1984",
     author="George Orwell",
-    publication_year=2024
+    publication_year=1949
 )
 
 ```
 
 ### Output
 ```python
-<Book: Harry Potter by J.K. Rowling (2024)>
+<Book: 1984 (1949)>
 1
 ```
 
