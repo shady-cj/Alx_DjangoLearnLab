@@ -7,7 +7,7 @@
 from bookshelf.models import Book
 
 # Retrieve a single record by its ID
-book = Book.objects.get(id=1)
+book = Book.objects.get(title="1984")
 book
 
 # Retrieve all books
