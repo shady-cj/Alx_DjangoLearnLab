@@ -1,4 +1,4 @@
-from .views import list_books, LibraryListView, LibraryDetailView, register
+from .views import list_books, LibraryListView, LibraryDetailView, register #views.register
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
