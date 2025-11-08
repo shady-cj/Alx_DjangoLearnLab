@@ -3,7 +3,14 @@
 from .models import Book, Author, Librarian, Library
 
 
-all_books_by_author_1 = Book.objects.filter(author__id=1)
+author_name = "J.K Rowling"
+
+author = Author.objects.get(name=author_name)
+
+
+#objects.filter(author=author)
+
+all_books_by_author_1 = Book.objects.filter(author=author)
 
 library_name = "new library"
 library_1 = Library.objects.get(name=library_name)
