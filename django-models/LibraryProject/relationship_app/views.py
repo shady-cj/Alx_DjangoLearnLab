@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.views.generic import ListView, DetailView
+from django.contrib.auth.forms import UserCreationForm
 # from django.views.generic.detail import DetailView
 
 from .models import Book, Library
@@ -8,6 +9,15 @@ from .models import Book, Library
 # from .models import Library
 # Create your views here.
 
+def register(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("login")
+    else:
+        form = UserCreationForm()
+    return render(request, "relationship_app/register.html", {"form": form})
 
 def list_books(request):
     books = Book.objects.all()
