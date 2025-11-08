@@ -5,7 +5,7 @@ User = get_user_model()
 
 
 
-class Profile(models.Model):
+class UserProfile(models.Model):
     ROLES = (
         ('Admin', 'Admin'),
         ('Librarian', 'Librarian'),
