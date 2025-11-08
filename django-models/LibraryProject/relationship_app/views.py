@@ -12,11 +12,13 @@ def list_books(request):
 
 class LibraryListView(ListView):
     model = Library
+    # template_name = "relationship_app/library_list.html"  default
     context_object_name = "libraries"
 
 
 class LibraryDetailView(DetailView):
     model = Library
+    # template_name = "relationship_app/library_detail.html"  default
     context_object_name = "library"
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
