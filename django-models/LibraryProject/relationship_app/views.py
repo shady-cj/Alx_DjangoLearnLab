@@ -36,20 +36,20 @@ class ViewBook(DetailView):
     template_name = 'relationship_app/book_detail.html'
 
 
-@permission_required("can_add_book")
+@permission_required("relationship_app.can_add_book")
 @require_http_methods(["POST"])
 def create_book(request):
-    data = request.POST
+    data = request.P
     title = data.get("title")
     author_name = data.get("author")
     author = get_object_or_404(Author, name=author_name)
     Book.objects.create(title=title, author=author)
     return redirect("books")
 
-@permission_required("can_change_book")
+@permission_required("relationship_app.can_change_book")
 @require_http_methods(["POST"])
 def update_book(request, pk=None):
-    data = request.POST
+    data = request.P
         
     title = data.get("title")
     author_name = data.get("author")
@@ -64,10 +64,9 @@ def update_book(request, pk=None):
     return redirect("book-detail", pk=pk)
 
 
-@permission_required("can_delete_book")
+@permission_required("relationship_app.can_delete_book")
 @require_http_methods(["DELETE"])
 def delete_book(request, pk=None):
-        
     book = get_object_or_404(Book, id=pk)
     book.delete()
     return redirect("books")
