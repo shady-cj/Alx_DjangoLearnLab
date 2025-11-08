@@ -2,7 +2,8 @@ from .views import AdminView, LibrarianView, MemberView,  list_books, LibraryLis
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
-
+# add_book
+# edit_book
 urlpatterns = [
     path("book-list/", list_books, name="books"),
     path('book-create/', create_book, name="book-create"),
