@@ -8,7 +8,7 @@ author_name = "J.K Rowling"
 author = Author.objects.get(name=author_name)
 
 
-#objects.filter(author=author)
+# objects.filter(author=author)
 
 all_books_by_author_1 = Book.objects.filter(author=author)
 
@@ -18,5 +18,7 @@ library_1 = Library.objects.get(name=library_name)
 all_library_1_books = library_1.books.all()
 
 
+
 library_1_librarian = library_1.librarian
+library_1_librarian_alt = Librarian.objects.get(library=library_1)
 
