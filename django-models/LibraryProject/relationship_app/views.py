@@ -43,7 +43,7 @@ class LibraryDetailView(DetailView):
         return context
     
 
-
+# for functions @user_passes_test
 @method_decorator(user_passes_test(lambda user: user.profile.role == 'Admin'), name="dispatch")
 class AdminView(TemplateView):
     template_name = "relationship_app/admin_view.html"
