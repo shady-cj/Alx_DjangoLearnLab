@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
 
+from django.views.generic.base import TemplateView
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import user_passes_test
+from django.utils.decorators import method_decorator
 # from django.contrib.auth import login
 # from django.views.generic.detail import DetailView
 
@@ -38,4 +41,19 @@ class LibraryDetailView(DetailView):
         context =  super().get_context_data(**kwargs)
         context["extra"] = "Extra data"
         return context
+    
+
+
+@method_decorator(user_passes_test(lambda user: user.profile.role == 'Admin'), name="dispatch")
+class AdminView(TemplateView):
+    template_name = "relationship_app/admin_view.html"
+
+
+@method_decorator(user_passes_test(lambda user: user.profile.role == 'Librarian'), name="dispatch")
+class LibrarianView(TemplateView):
+    template_name = "relationship_app/librarian_view.html"
+
+@method_decorator(user_passes_test(lambda user: user.profile.role == 'Member'), name="dispatch")
+class MemberView(TemplateView):
+    template_name = "relationship_app/member_view.html"
 

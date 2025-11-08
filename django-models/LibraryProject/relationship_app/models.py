@@ -1,5 +1,18 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
+
+
+
+class Profile(models.Model):
+    ROLES = (
+        ('Admin', 'Admin'),
+        ('Librarian', 'Librarian'),
+        ('Member', 'Member')
+    )
+    user = models.OneToOneField(User, on_delete=models.PROTECT)
+    role = models.CharField(choices=ROLES, default='Member')
 # Create your models here.
 
 class Author(models.Model):
