@@ -5,12 +5,16 @@ from django.contrib.auth.decorators import permission_required
 from .models import Book
 
 
+
+
 @permission_required("bookshelf.can_view", raise_exception=True)
 def view_book(request, pk=None):
     if request.method == "GET":
         book = get_object_or_404(Book, pk=pk)
         return HttpResponse(f"Book detail\n {book.title} by {book.author} published {book.publication_year}")
     
+
+#book_list
 @permission_required("bookshelf.can_view", raise_exception=True)
 def list_books(request):
     if request.method == "GET":
