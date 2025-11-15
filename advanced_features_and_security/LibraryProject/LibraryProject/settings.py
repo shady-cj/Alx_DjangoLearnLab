@@ -143,3 +143,4 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 CSP_DEFAULT_SRC = ("'self'",)  # Only allow resources from your domain
 CSP_SCRIPT_SRC = ("'self'", "https://trusted.cdn.com")
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
