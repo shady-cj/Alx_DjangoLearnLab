@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404, HttpResponse
 from django.contrib.auth.decorators import permission_required
-from .forms import BookForm
+from .forms import ExampleForm
 # Create your views here.
 from .models import Book
 
@@ -23,9 +23,9 @@ def list_books(request):
     
 @permission_required("bookshelf.can_create", raise_exception=True)
 def create_book(request):
-    form = BookForm()
+    form = ExampleForm()
     if request.method == "POST":
-        form = BookForm(request.POST)
+        form = ExampleForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponse(f"Book created successfully", 201)
