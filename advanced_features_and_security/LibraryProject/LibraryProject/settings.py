@@ -83,7 +83,7 @@ DATABASES = {
 }
 
 
-AUTH_USER_MODEL = 'bookshelf.User'
+AUTH_USER_MODEL = 'bookshelf.CustomUser'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
