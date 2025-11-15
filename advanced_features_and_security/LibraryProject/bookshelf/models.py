@@ -8,31 +8,35 @@ class CustomUserManager(BaseUserManager):
     def create_user(self, username, password=None, **extra_fields):
 
         if username is None:
-            raise TypeError("Users should have a Usernaname")
+            raise TypeError("Users should have a Username")
         if password is None:
             raise TypeError("Password is required")
 
-        user = self.model(user=username, **extra_fields)
+        user = self.model(username=username, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, password=None):
+    def create_superuser(self, username, password=None, **extra_fields):
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Superuser must have is_staff=True.")
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Superuser must have is_superuser=True.")
         if username is None:
             raise TypeError("Users should have a Username")
         if password is None:
             raise TypeError("Password should not be none")
 
-        user = self.create_user(email, password)
-        user.is_superuser = True
-        user.is_staff = True
+        user = self.create_user(username, password, **extra_fields)
         user.save(using=self._db)
         return user
 
 
 class User(AbstractUser):
-    date_of_birth = models.DateField()
-    profile_photo = models.ImageField(upload_to="users/photo")
+    date_of_birth = models.DateField(null=True, blank=True)
+    profile_photo = models.ImageField(upload_to="users/photo", null=True, blank=True)
     objects = CustomUserManager()
 
 
