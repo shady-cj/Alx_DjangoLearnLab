@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block  title %} Library Detail {% endblock %}
+
+{% block body %} 
+
+ <h1>Library Name: {{library.name}} </h1>
+
+ <h3>Books</h3>
+
+ <ul>
+    {% for book in library.books.all %}
+        <li>Book Name: {{ book.name }}</li>
+        <li>Book Author: {{ book.author.name}}</li>
+    {% empty %}
+        <h4>No books in library</h4>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block  title %} Library List {% endblock %}
+
+{% block body %} 
+{% for library in libraries %}
+ <h1><a href="{% url 'library-detail' library.id %}">Library Name: {{library}} </a></h1>
+
+ {% empty %}
+<h4>No libraries available yet.</h4>
+{% endfor %}
+{% endblock %}

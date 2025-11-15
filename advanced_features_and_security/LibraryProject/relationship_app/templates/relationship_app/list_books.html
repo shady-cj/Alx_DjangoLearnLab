@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block  title %} List Books {% endblock %}
+
+{% block body %} 
+{% for book in books %}
+ <h1>Author Name: {{book.author.name}} </h1>
+ <h3>Book title: {{book.title}}</h3>
+
+ {% empty %}
+<h4>No books available yet.</h4>
+{% endfor %}
+{% endblock %}
