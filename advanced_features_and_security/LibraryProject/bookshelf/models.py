@@ -1,8 +1,15 @@
 from django.db import models
 
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.auth.models import Group
 
+editors = Group.objects.get_or_create(name="Editors")
+viewers = Group.objects.get_or_create(name="Viewers")
+admins = Group.objects.get_or_create(name="Admins")
 
+editors.permissions.set(["bookshelf.can_create", "bookshelf.can_edit", "bookshelf.can_view"])
+viewers.permissions.set(["bookshelf.can_view"])
+admins.permissions.set(["bookshelf.can_create", "bookshelf.can_edit", "bookshelf.can_view", "bookshelf.can_delete"])
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, password=None, **extra_fields):
@@ -47,4 +54,12 @@ class Book(models.Model):
 
     def __str__(self):
         return f"{self.title} by {self.author} ({self.publication_year})"
+    
+    class Meta:
+        permissions = (
+            ("can_view", "Can view books"),
+            ("can_create", "Can Create books"),
+            ("can_edit", "Can edit books"),
+            ("can_delete", "Can delete books")
+        )
     

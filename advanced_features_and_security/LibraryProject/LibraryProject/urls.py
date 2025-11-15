@@ -18,8 +18,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 import relationship_app.urls
+import bookshelf.urls
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include(relationship_app.urls))
+    path("", include(relationship_app.urls)),
+    path("bookshelf/", include(bookshelf.urls))
 ]

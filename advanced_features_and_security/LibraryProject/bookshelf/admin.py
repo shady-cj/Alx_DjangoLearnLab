@@ -101,4 +101,4 @@ class BookAdmin(admin.ModelAdmin):
 admin.site.register(CustomUser, CustomUserAdmin)
 # ... and, since we're not using Django's built-in permissions,
 # unregister the Group model from admin.
-admin.site.unregister(Group)
+admin.site.register(Group)
