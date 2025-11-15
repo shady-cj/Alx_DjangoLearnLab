@@ -50,7 +50,7 @@ class UserChangeForm(forms.ModelForm):
         fields = ["username", "password", "date_of_birth", "is_active", "is_staff"]
 
 
-class UserAdmin(BaseUserAdmin):
+class CustomUserAdmin(BaseUserAdmin):
     # The forms to add and change user instances
     form = UserChangeForm
     add_form = UserCreationForm
@@ -98,7 +98,7 @@ class BookAdmin(admin.ModelAdmin):
     ordering = ('title',)
 
 # Now register the new UserAdmin...
-admin.site.register(CustomUser, UserAdmin)
+admin.site.register(CustomUser, CustomUserAdmin)
 # ... and, since we're not using Django's built-in permissions,
 # unregister the Group model from admin.
 admin.site.unregister(Group)
