@@ -13,7 +13,6 @@ class BookList(ListAPIView):
     
 
 
-class BookViewset(ModelViewSet):
+class BookViewSet(ModelViewSet):
     queryset = Book
     serializer_class = BookSerializer 
-    
