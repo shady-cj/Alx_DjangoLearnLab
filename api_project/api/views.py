@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ModelViewSet
+from rest_framework import permissions
 # viewsets.ModelViewSet
 # generics.ListAPIView
 
@@ -15,5 +16,6 @@ class BookList(ListAPIView):
 
 
 class BookViewSet(ModelViewSet):
-    queryset = Book
+    queryset = Book.objects.all()
     serializer_class = BookSerializer 
+    permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
