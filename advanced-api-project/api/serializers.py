@@ -3,7 +3,7 @@ from .models import Book, Author
 from datetime import datetime
 
 
-class BookSerializers(serializers.ModelSerializer):
+class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         fields = '__all__'
@@ -21,8 +21,8 @@ class BookSerializers(serializers.ModelSerializer):
 
 
     
-class Author(serializers.ModelSerializer):
-    books = BookSerializers(many=True, read_only=True)
+class AuthorSerializer(serializers.ModelSerializer):
+    books = BookSerializer(many=True, read_only=True)
     class Meta:
         model = Author
         fields = ['name', 'books']
