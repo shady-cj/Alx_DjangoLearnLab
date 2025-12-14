@@ -3,6 +3,8 @@ from rest_framework.generics import CreateAPIView, RetrieveAPIView, GenericAPIVi
 from rest_framework.response import Response
 from .serializers import User, RegisterSerializer, ProfileSerializer
 from rest_framework.permissions import IsAuthenticated
+from django.contrib.contenttypes.models import ContentType
+from notifications.models import Notification
 # Create your views here.
 # generics.GenericAPIView", "permissions.IsAuthenticated", "CustomUser.objects.all()", "return Response
 class RegisterUserView(CreateAPIView):
@@ -22,6 +24,13 @@ class FollowUser(GenericAPIView):
         request.user.following.add(u)
         u.followers.add(request.user)
         serializer = self.get_serializer(request.user)
+        Notification.objects.create(
+            recipient = u,
+            actor = request.user,
+            object_id=u.id,
+            verb=f"{request.user.username} started following you",
+            target=ContentType.objects.get_for_model(u)
+        )
         return Response(serializer.data)
 
 class UnFollowUser(GenericAPIView):
@@ -32,4 +41,12 @@ class UnFollowUser(GenericAPIView):
         request.user.following.remove(u)
         u.followers.remove(request.user)
         serializer = self.get_serializer(request.user)
+        Notification.objects.create(
+            recipient = u,
+            actor = request.user,
+            object_id=u.id,
+            verb=f"{request.user.username} unfollowed you",
+            target=ContentType.objects.get_for_model(u)
+        )
         return Response(serializer.data)
+
