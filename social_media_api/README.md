@@ -1,6 +1,6 @@
 # Social Media API (Django + DRF)
 
-This project is a simple starter backend for a social media–style API built with **Django** and **Django REST Framework (DRF)**. It focuses on user authentication, profiles, posts, comments, following, feeds, and token-based access.
+This project is a simple starter backend for a social media–style API built with **Django** and **Django REST Framework (DRF)**. It focuses on user authentication, profiles, posts, comments, following, feeds, likes, notifications, and token-based access.
 
 ---
 
@@ -24,6 +24,7 @@ django-admin startproject social_media_api
 cd social_media_api
 python manage.py startapp accounts
 python manage.py startapp posts
+python manage.py startapp notifications
 ```
 
 ### Update `settings.py`
@@ -34,6 +35,7 @@ Add the following to `INSTALLED_APPS`:
 * `rest_framework.authtoken`
 * `accounts`
 * `posts`
+* `notifications`
 
 ---
 
@@ -75,44 +77,50 @@ python manage.py migrate
 
 ---
 
-## 3. Posts and Comments Functionality
+## 3. Posts, Comments, Likes, and Notifications
 
 ### Step 1: Models
 
-* **Post**: Fields include `author` (ForeignKey to User), `title`, `content`, `created_at`, `updated_at`
-* **Comment**: Fields include `post` (ForeignKey), `author` (ForeignKey to User), `content`, `created_at`, `updated_at`
+* **Post**: `author` (ForeignKey to User), `title`, `content`, `created_at`, `updated_at`
+* **Comment**: `post` (ForeignKey), `author` (ForeignKey to User), `content`, `created_at`, `updated_at`
+* **Like**: `user` (ForeignKey), `post` (ForeignKey to Post) in `posts` app
+* **Notification**: `recipient` (ForeignKey to User), `actor` (ForeignKey to User), `verb`, `target` (GenericForeignKey), `timestamp` in `notifications` app
 
 Run migrations for the new models:
 
 ```bash
-python manage.py makemigrations posts
+python manage.py makemigrations posts notifications
 python manage.py migrate
 ```
 
 ### Step 2: Serializers
 
-* Create serializers for `Post` and `Comment` in `posts/serializers.py`
-* Handle user relationships and data validation
+* Create serializers for `Post`, `Comment`, `Like`, and `Notification`
+* Handle user relationships, data validation, and notification formatting
 
 ### Step 3: Views
 
-* Use DRF viewsets in `posts/views.py` for CRUD operations
-* Implement permissions to allow users to edit/delete only their own posts/comments
+* **Posts & Comments**: CRUD with DRF viewsets
+* **Likes**: Views for liking/unliking posts
+
+  * Prevent multiple likes from the same user on the same post
+  * Trigger notifications when posts are liked
+* **Notifications**: Views to fetch user notifications, prioritizing unread ones
 
 ### Step 4: URL Routing
 
-* Define routes in `posts/urls.py` using DRF routers
-* Include endpoints for listing, creating, editing, and deleting posts and comments
+* **Posts/Comments**: `posts/urls.py` with CRUD routes
+* **Likes**: `posts/<int:pk>/like/` and `posts/<int:pk>/unlike/`
+* **Notifications**: `notifications/urls.py` with `/notifications/` endpoint
 
 ### Step 5: Pagination and Filtering
 
-* Add pagination to post and comment lists
-* Implement filtering in post views to search by `title` or `content`
+* Apply pagination to posts, comments, and notifications lists
+* Filter posts by `title` or `content` for search functionality
 
 ### Step 6: Feed
 
-* Create a feed endpoint in `posts/views.py`
-* Return posts from users that the current user follows, ordered by `created_at` descending
+* Endpoint to return posts from users that the current user follows, ordered by `created_at` descending
 
 ---
 
@@ -120,19 +128,14 @@ python manage.py migrate
 
 ### Views
 
-* Implement actions in `accounts/views.py`:
-
-  * `follow_user(user_id)`
-  * `unfollow_user(user_id)`
-* Enforce permissions so users can modify only their own following list
+* `follow_user(user_id)`
+* `unfollow_user(user_id)`
+* Permissions enforce that users can only modify their own following list
 
 ### URL Routing
 
-* Add to `accounts/urls.py`:
-
-  * `/follow/<int:user_id>/`
-  * `/unfollow/<int:user_id>/`
-* Add feed endpoint to `posts/urls.py`: `/feed/`
+* `accounts/urls.py`: `/follow/<int:user_id>/`, `/unfollow/<int:user_id>/`
+* Feed endpoint in `posts/urls.py`: `/feed/`
 
 ---
 
@@ -141,10 +144,13 @@ python manage.py migrate
 * `POST /register` – user registration
 * `POST /login` – user login
 * `GET /profile` – user profile management
-* Follow/unfollow endpoints and feed endpoint
+* Follow/unfollow endpoints
+* Feed endpoint
+* Likes endpoints
+* Notifications endpoint
 * Registration and login endpoints return an authentication token
 
-Include `accounts` and `posts` URLs in the main project `urls.py`.
+Include `accounts`, `posts`, and `notifications` URLs in the main project `urls.py`.
 
 ---
 
@@ -161,7 +167,8 @@ python manage.py runserver
 * Register and log in users
 * Follow/unfollow users
 * Create, edit, and delete posts and comments
-* Test feed to ensure it shows posts from followed users only
-* Test filtering, pagination, and permission enforcement using Postman or similar tools
+* Like/unlike posts
+* Fetch notifications and test feed
+* Validate filtering, pagination, and permission enforcement using Postman or similar tools
 
 ---
