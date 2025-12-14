@@ -52,6 +52,7 @@ class PostFeedListView(ListAPIView):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["content", "post", "author"]
     def get_queryset(self):
-        return queryset.filter(author__in=self.request.user.following.all()).order_by('-created_at')
+        following_users = self.request.user.following.all()
+        return Post.objects.filter(author__in=following_users).order_by('-created_at')
    
 
