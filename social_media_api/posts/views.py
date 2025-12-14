@@ -4,6 +4,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .permissions import CreateUpdatePermission
 from rest_framework.permissions import IsAuthenticated
 from .serializers import Post, PostSerializer, Comment, CommentSerializer
+# we could use "viewsets", "viewsets.ModelViewSet"
 
 # Create your views here.
 
