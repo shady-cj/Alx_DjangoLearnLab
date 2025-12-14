@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from django_filters.rest_framework import DjangoFilterBackend
 from .permissions import CreateUpdatePermission
 from rest_framework.permissions import IsAuthenticated
 from .serializers import Post, PostSerializer, Comment, CommentSerializer
@@ -10,6 +11,8 @@ class PostCreateListView(ListCreateAPIView):
     queryset = Post.objects.all()
     permission_classes = [IsAuthenticated, CreateUpdatePermission]
     serializer_class = PostSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["title", "content", "author"]
 
     def perform_create(self, serializer):
         user = self.request.user
@@ -25,6 +28,8 @@ class CommentCreateListView(ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [IsAuthenticated, CreateUpdatePermission]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["content", "post", "author"]
 
     def perform_create(self, serializer):
         id = self.kwargs.get('pk')
