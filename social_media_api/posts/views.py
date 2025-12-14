@@ -9,7 +9,7 @@ from .models import Like
 from notifications.models import Notification
 from django.contrib.contenttypes.models import ContentType
 # we could use "viewsets", "viewsets.ModelViewSet"
-
+#generics.get_object_or_404(Post, pk=pk)", "Like.objects.get_or_create(user=request.user, post=post)"
 # Create your views here.
 
 class PostCreateListView(ListCreateAPIView):
@@ -76,7 +76,7 @@ class LikePost(GenericAPIView):
     serializer_class = PostSerializer 
     def post(self, request, pk, *args, **kwargs):
         post = get_object_or_404(Post, pk=pk)
-        Like.objects.create(post=post, user=request.user)
+        Like.objects.get_or_create(post=post, user=request.user)
         Notification.objects.create(
             recipient = post.author,
             actor = self.request.user,
