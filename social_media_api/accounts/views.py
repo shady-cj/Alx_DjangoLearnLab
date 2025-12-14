@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404
-from rest_framework.generics import CreateAPIView, RetrieveAPIView
-from rest_framework.views import APIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, GenericAPIView
+from rest_framework.response import Response
 from .serializers import User, RegisterSerializer, ProfileSerializer
 from rest_framework.permissions import IsAuthenticated
 # Create your views here.
-
+# generics.GenericAPIView", "permissions.IsAuthenticated", "CustomUser.objects.all()", "return Response
 class RegisterUserView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
@@ -14,16 +14,22 @@ class UserProfileView(RetrieveAPIView):
     serializer_class = ProfileSerializer
 
 
-class FollowUser(APIView):
+class FollowUser(GenericAPIView):
+    serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
     def post(self, request, user_id, *args, **kwargs):
         u = get_object_or_404(User, id=user_id)
         request.user.following.add(u)
         u.followers.add(request.user)
+        serializer = self.get_serializer(request.user)
+        return Response(serializer.data)
 
-class UnFollowUser(APIView):
+class UnFollowUser(GenericAPIView):
+    serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
     def post(self, request, user_id, *args, **kwargs):
         u = get_object_or_404(User, id=user_id)
         request.user.following.remove(u)
         u.followers.remove(request.user)
+        serializer = self.get_serializer(request.user)
+        return Response(serializer.data)
