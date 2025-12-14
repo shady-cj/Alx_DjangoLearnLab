@@ -43,3 +43,6 @@ coverage.xml
 *.cover
 *.py,cover
 .hypothesis/
+*.django-env
+Scripts/
+pyvenv.cfg
