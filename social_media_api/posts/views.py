@@ -4,7 +4,6 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .permissions import CreateUpdatePermission
 from rest_framework.permissions import IsAuthenticated
 from .serializers import Post, PostSerializer, Comment, CommentSerializer
-
 # we could use "viewsets", "viewsets.ModelViewSet"
 
 # Create your views here.
@@ -51,6 +50,9 @@ class PostFeedListView(ListAPIView):
     serializer_class = PostSerializer 
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["content", "post", "author"]
+    permission_classes = [IsAuthenticated]
+# ["permissions.IsAuthenticated"]
+
     def get_queryset(self):
         following_users = self.request.user.following.all()
         return Post.objects.filter(author__in=following_users).order_by('-created_at')
