@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 from django_filters.rest_framework import DjangoFilterBackend
 from .permissions import CreateUpdatePermission
 from rest_framework.permissions import IsAuthenticated
 from .serializers import Post, PostSerializer, Comment, CommentSerializer
+
 # we could use "viewsets", "viewsets.ModelViewSet"
 
 # Create your views here.
@@ -44,4 +45,13 @@ class CommentRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, CreateUpdatePermission]
 
 
+
+class PostFeedListView(ListAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer 
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["content", "post", "author"]
+    def get_queryset(self):
+        return queryset.filter(author__in=self.request.user.following.all()).order_by('-created_at')
+   
 
