@@ -1,6 +1,6 @@
 # Social Media API (Django + DRF)
 
-This project is a simple starter backend for a social media–style API built with **Django** and **Django REST Framework (DRF)**. It focuses on user authentication, profiles, posts, comments, and token-based access.
+This project is a simple starter backend for a social media–style API built with **Django** and **Django REST Framework (DRF)**. It focuses on user authentication, profiles, posts, comments, following, feeds, and token-based access.
 
 ---
 
@@ -47,13 +47,19 @@ Add the following to `INSTALLED_APPS`:
   * `bio`
   * `profile_picture`
   * `followers` (self-referencing `ManyToManyField` with `symmetrical=False`)
+  * `following` (self-referencing `ManyToManyField` to track users that the user follows)
 
-> Using `symmetrical=False` allows one-way following.
+Run migrations to update the user model:
+
+```bash
+python manage.py makemigrations accounts
+python manage.py migrate
+```
 
 ### Token Authentication
 
 * Enable DRF token authentication
-* Run migrations to create the token table:
+* Run migrations to create the token table if not already done:
 
 ```bash
 python manage.py migrate
@@ -64,6 +70,8 @@ python manage.py migrate
 * User registration
 * User login
 * Token generation and retrieval
+* Follow/unfollow other users
+* View feed based on followed users' posts
 
 ---
 
@@ -101,30 +109,46 @@ python manage.py migrate
 * Add pagination to post and comment lists
 * Implement filtering in post views to search by `title` or `content`
 
-### Step 6: Testing
+### Step 6: Feed
 
-* Test all endpoints using Postman or automated tests
-* Validate permissions and data integrity
-
-### Step 7: API Documentation
-
-* Document endpoints for posts and comments
-* Include request/response examples for all operations
+* Create a feed endpoint in `posts/views.py`
+* Return posts from users that the current user follows, ordered by `created_at` descending
 
 ---
 
-## 4. URL Configuration for Accounts
+## 4. Follow Management
+
+### Views
+
+* Implement actions in `accounts/views.py`:
+
+  * `follow_user(user_id)`
+  * `unfollow_user(user_id)`
+* Enforce permissions so users can modify only their own following list
+
+### URL Routing
+
+* Add to `accounts/urls.py`:
+
+  * `/follow/<int:user_id>/`
+  * `/unfollow/<int:user_id>/`
+* Add feed endpoint to `posts/urls.py`: `/feed/`
+
+---
+
+## 5. URL Configuration for Accounts
 
 * `POST /register` – user registration
 * `POST /login` – user login
 * `GET /profile` – user profile management
+* Follow/unfollow endpoints and feed endpoint
 * Registration and login endpoints return an authentication token
 
 Include `accounts` and `posts` URLs in the main project `urls.py`.
 
 ---
 
-## 5. Testing & Running the Server
+## 6. Testing & Running the Server
 
 ### Start Development Server
 
@@ -132,3 +156,12 @@ Include `accounts` and `posts` URLs in the main project `urls.py`.
 python manage.py runserver
 ```
 
+### API Testing
+
+* Register and log in users
+* Follow/unfollow users
+* Create, edit, and delete posts and comments
+* Test feed to ensure it shows posts from followed users only
+* Test filtering, pagination, and permission enforcement using Postman or similar tools
+
+---
